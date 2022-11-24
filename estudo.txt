@@ -1,0 +1,155 @@
+Classe Controller ->
+	* É a classe que a gente faz a comunicação com quem chama nossa aplicação (ex: front)
+	* E a classe que criamos ENDPOINTS (pontos que tem as rotas mapeadas para acesso do front)
+	* Recebe a anotação @Controller que indica para o Spring que se trata de um controller
+	* @ResponseBody -> Indica que seu endpoint (metodo com rota), tem um retorno para fora do Java (para o front)
+	* @RequestMapping -> Que indica a rota para acessar a classe (localhost:8080/rotaDaClasse/rotaDoEndpoint)
+	* @GetMapping (ou PostMapping, ou PutMapping ou DeleteMapping) -> Mapeia a rota do endpoint e define o metodo REST como GET, POST PUT ou DELETE
+Classe Service ->
+	* @Service para indicar para spring que se trata de uma service
+	* É a classe responsável por ter nossa regra de negócio
+	* É aqui que nosso código principal fica, ela quem converte objetos, chama o banco de dados, chama o que o codigo precisar
+Interface Repository ->
+	* É a interface que comunica com o banco de dados
+	* @Repository para falar para spring que se trata de um repository
+	* Para nao precisarmos criar o codigo que vai no banco de dados, extendemos a JpaRepository, passando a entity e o tipo de dado da primary key, assim o spring cria para gente o codigo de ir no banco de dados
+
+Entity ->
+	* É um objeto para comunicar com o banco de dados, ele representa uma tabela do seu banco
+	* @Entity para falar para o spring que se trata de uma entity
+	* @Table para falar para o spring, qual tabela se refere
+	* @Id para falar para o spring, qual campo dessa tabela, é a primary key do banco de dados
+	* @GeneratedValuye para falar para o spring se a primary key, e auto gerado (Ex: id 1, 2, 3, 4 ,5)
+	* @Column para falar para o spring, qual a coluna do banco de dados, a variavel representa (so usamos caso os nomes nao seja correspondentes)
+
+DTO ->
+	* É um objeto simples
+	* É utilizado para comunicar com o front-end e trafegado entre a classe controler e service
+
+Funcionamento do salvar->
+	1 - Classe Contrler recebe a requisicao do front-ent (DTO marcado com @RequestBody)
+	2 - Controller chama a Service passando o DTO(@Autowired para injetar a service dentro da controller)
+ 	3 - Service recebe a requisição do controller e converte o DTO em ENTITY
+	4 - Service chama a repository, passando a entity (@Autowired para injetar o repository na service)
+	5 - Repository chama o banco de dados e salva (Spring que cria o codigo atraves das anotacoes)
+	6 - Service recebe o objeto salvo (entity), converte para DTO
+	7 - Service retorna o DTO para controller
+	8 - Controller retorna o DTO para o front
+
+Funcionamento do buscar->
+	1 - Controller recebe a requisicao do front-end e o ID do item buscado (@RequestParam)
+	2 - Controller chama a Service passando o ID (@Autowired para injetar a service dentro da controller)
+	3 - Service recebe a requisição do controller e busca na repository o findById
+	4 - Service recebe o retorno da repository (entity) e converte para DTO
+	5 - Service retorna para Controller o DTO
+	6 - Controller retorna para front o DTO (@ReponseBody)
+
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+
+* Em codigo saber o que é Mapper
+	- O mapper é uma blibioteca do java, que é usada para fazer o mapeamento de uma ENTITY para DTO, ou de DTO para ENTITY.
+____________________________________________________________________________________________________________________________________________________________________________________________
+
+* CRUD (Conceito, só aqui que te expliquei das 4 operações)
+	- o CRUD é as 4 operações de um sistema, CREATE (criar), READ (ler), UPADATE (atualizar), DELETE (deletar).
+___________________________________________________________________________________________________________________________________________________________________________________________
+
+* Banco de Dados
+	*Banco de dados é um conjunto de tabelas, e com isso tabela são um grupo de registros
+	- CREATE DATABASE-> É o comando para criar o BANCO DE DADOS 
+	- DROP DATABASE -> É o comando para apagar um banco de dados ja criado.
+	- DEFAULT CHARACTER SET utf8 e DEFAULT COLLATE utf8_general_ci -> Colocar a ortografia brasileira no MySql
+	- INSERT INTO -> Inserir os dados na tabela, e VALEU o valor de cada variavel a ser inserida.
+	- NOT NULL UNIQUE  -> Esse campo não pode ser nulo, ou seja obrigatorio preenchimento com qualquer tipo de dados.
+	- CREATE TABLE-> É o comando para criar tabelas do banco de dados.
+	- PRIMARY KEY -> Usado para a variavel do tipo ID.
+	- UPDATE "nome da tabela"	SET "variavel = os dados que deseja mudar" WHERE -> usado para mdificar dados em qualquer linha do banco de dados 
+	- DELETE FROM "nome da tabela" + WHERE = 'id' -> Para deletar a linha de uma tabela.
+	- TRUNCATE TABLE -> Usado para delatar todas as linhas de uma tabela.
+	- ALTER TABLE -> Usado para fazer alteração na tabela do banco de dados.
+		- ADD COLUMN -> Usado para adicionar uma coluna na tabela do abnco de dados.
+		- DROP COLUMN -> Usado para delatar uma coluna do banco de dados.
+		- MODIFY COLUMN -> Modificar a coluna na tabela do banco de dadso.
+		- CHANGE COLUMN -> Modificar o nome da coluna no banco de DADOS.
+		- RENAME TO -> Modificar o nome da tabela do banco de Dados.
+	
+				_______
+				SELECT
+	- SELECT FROM -> Visualizar dados salvos na tabela do banco de dados.
+	- ORDER BY -> Ordenar a tabela do banco de dados. (EX; ordem alfabetica, do maior para o menor, etc )
+	- WHERE-> Pode ser usados os seguintes sinais(<, <=, >, >=, =, !=)
+	- WHERE BETWEEN -> Between significa entre uma coisa e outra, entre uns dados e outro.
+	- WHERE IN -> Limita os dados a ser mostrado.(EX: WHERE 'ano' IN '2016')
+	- WHERE AND ou WHERE OR-> WHERE AND siginifa entre um dado E outro... WHERE OR significa entre um dado OU outro.
+	- WHERE LIKE -> É uma modo de pesquisa no banco de dados, buscando pela semelhança.(Ex: WHERE 'nome' LIKE 'E%'  -> Nesse caso buscara por nomes que comece com a letra (E);(LEMBRETE: Se o (%E) vir antes das letras vai fazer uma busca com nomes que tanham E no final. Colocando o (%E%) vai buscar o nome que tenha a letra E em qualquer lugar))
+	- SELECT DISTINCT -> Fazer uma busca sem que aja repetição, uma busca distinta.
+	- SELECT COUNT (*) FROM -> Faz uma contagem de quantas vezes se repete os dados que estão presente na tabela.
+	- SELECT MAX FROM -> Ele buscara o dado com a maior quantidade, com o maior numero.
+	- SELECT MIN FROM -> Ele buscra o dado como a menor quantidade, com o menor numero.
+	- SELECT SUM FROM -> Ele fara a soma de dados.(EX: SELECT SUM('peso') FROM 'pessoas')
+	- SELECT AVG FROM -> Ele tira a media da soma. (EX: SELECT AVG('peso') FROM 'pessoas')
+	- GROUP BY -> Usado para fazer pesquisa na tabela do banco de dados, trazendo os dados agrupados.
+				_______
+	- ACID -> A= Atomicidade ou seja não pode ser divididas em subs tarefas, tem que ser feita completa. C= Concistencia ou seja não pode ocorrer falha no seu banco de dados. I= Isolamento ou seja se ouver duas alteração no banco de dados ao mesmo tempo, uma não pode interferir na outra, ou seja transações isoladas. D= Durabilidade ou seja todos os dados do banco de dados tem que ser duravel, ate que seja apagado manualmente.
+	- ADD FOREING KEY -> Para adicionar uma chave estrangeira em sua tabela. REFERENCES -> Referencia de outra tabela a qual vem sua chave estrangeira.
+	- SELECT FROM JOIN ON -> Usado para ver oque tem de relação de duas tabelas, ou seja onde um dado de uma tabela se relaciona com outra tabela. (EX: SELECT 'pessoas.nome' FROM 'pessoas' JOIN 'cursos' ON 'curso.idcurso = pessoas.cursopreferido')
+	- SELECT FROM LEFT JOIN ON -> Usado para ver oque tem de relação de duas tabelas, ou seja onde um dado de uma tabela se relaciona com outra tabela, POREM dando uma preferencia a tabela referente ao lado DIREITO. (EX: SELECT 'pessoas.nome' FROM 'pessoas' LEFT JOIN 'cursos' ON 'curso.idcurso = pessoas.cursopreferido')
+	- SELECT FROM RIGHT JOIN ON -> Usado para ver oque tem de relação de duas tabelas, ou seja onde um dado de uma tabela se relaciona com outra tabela, POREM dando uma preferencia a tabela referente ao lado DIREITO. (EX: SELECT 'pessoas.nome' FROM 'pessoas' LEFT JOIN 'cursos' ON 'curso.idcurso = pessoas.cursopreferido')
+	- CRUD;
+	- INNER JOIN
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+* Kanban -> Ver um quadro e entender
+ 	- O KANBAM é uma metodologia agil usada para realizar tarefaz.
+	- O mais utilizado é o quadro de KANBAN que é seperado em funções. TO DO, DOING E DONE.(TO DO = Local onde você coloca as tarefas a ser feitas. DOING = Tarefas que estão sendo realizadas no momento. DONE = Tarefaz a qual ja foram realizadas)
+___________________________________________________________________________________________________________________________________________________________________________________
+
+* Scrum -> Sprint Eventos: Daily, Planning, Refinamento, Review Personas: PO, DevTeam, ScrumMaster
+	- É usado para ter uma entrega mais agil, mais barata e com mais qualidade. 
+	- BACKLOG -> É o local onde é listado oque tera que ser feito.
+	- SPRIN BACKLOG -> È onde seleciona oque vai para o sprint.
+	- PLANEJAMENTO DO SPRINT -> É onde seleciona as atividades que serão feitas durante um determindado tempo.
+	- DAILY SCRUM -> São as reuniões diarias, para passar um fadback das atividades que estão sendo feitas.
+	- REVISÃO DO SPRINT -> É um reunião informal para apresentar ao time (ao PO da equipe), oque foi entregue.
+	- RETROSPECTIVA DO SPRINT -> Ve a atividade com um todo, e analisa oque pode haver de mudança para um melhoramento para as proximas atividades.
+	- PO -> É o gerente do produto, o lider das equipes.
+	- SCUM MASTER -> É o especialista de scrum dentro da equipe.
+	- DEV TEAM -> Entrega dos item priorizados, entrega das atividades. 
+_________________________________________________________________________________________________________________________________________________________________________________________
+* GIT -> relembrar os principais comandos (FOI BEM)
+
+	- git config --global user.name "Edriel Silva" -> (git config = configuração) (--global = significa que em qualquer lugar do meu computador e abrir meu terminal e executar o comando git ele vai usar essas credenciais executadas)
+	- git config --global user.email "edriel2304@gmail.com" -> Adicionar o email de acesso do git (tem que ser o mesmo email cadastrado no git).
+	- git status -> Mostra qual o istadu de cada arquivo dentro da pasta.
+	- git add 'nome do arquivo' -> Passar de untracked para Stege, para poder ser comitada. 
+	- git add . -> Passar todos arquivos de uma vez de untracked para stage.
+	- git commit -m "faça um comentario" -> comitar os dados da pasta que foram modificados ou adicionados.
+	- git log -> ver os commit
+	- git diff 'nome do arquivo' -> ver a alteração dentro de um arquivo.
+	- git remote add origin 'https://github.com/Edriel23/Teste.git' -> Comando para add o repositorio do git
+	- git push -u origin master -> para subir os arquivos pra o git, nesse caso na brench 'master'
+	- git clone https://github.com/Edriel23/Teste.git -> Baixar os projetos do git para a pasta do computador
+	- git checkout -b branch-teste -> criar uma nova branch 
+	
+_____________________________________________________________________________________________________________________________________________________________________________________
+
+* Teste unitario - É um teste que deve seer feito para executar a menor unidade do seu sistema.
+	- Tem a função de, avaliar a aplicação, garantir a segurança e garantir a integridade da sua aplicação.
+	- Testes; independente qual seja  tipo de teste existe 3 passos: GIVEN -> É onde você define o estado, onde você monta o senario... WHEN -> Executa o senario montado... THEN -> É onde vc verifica se o retorno é de fato o reetorno esperado.
+* Modelos de testagem SAST e DAST -> Ambos são modelos de testagem, mas a diferença é que o SAST é uma analise estatica e o DAST é uma analise dinamica.
+	- SAST (Mais rapido, Simples, Larga escala(ou seja te que cobrir o maior volume da sua aplicação) , pode ser viciado, limitado)
+	- DAST (Mais complexo, abrangente, Correção de vunerabilidade tende a ser adiada, demorado)
+	- TDD -> A visão do TDD é basiacamente você escrever o seu teste antes de escrever o seu codigo, e por fim depois executar.
+*DICAS 
+	- Faça teste crtos 
+	- DRY (NÃO REPITA CODIGO)
+	- Teste unitario não é teste de integração
+	- Saiba nomear os seus teste
+	- Uma asserção logica por teste, ou seja você testar apenas uma coisa por teste. 
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+
+* Swagger -> O que é?
+	
+
