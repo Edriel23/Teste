@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.meuapp.dto.FuncionarioDto;
-import com.meuapp.entity.FuncionarioEntity;
 import com.meuapp.service.FuncionarioService;
 
 @Controller
@@ -22,12 +21,12 @@ public class FuncionarioContrller {
 	
 	@ResponseBody
 	@PostMapping("/salvar")
-	public FuncionarioEntity salvarFuncionario (@RequestBody FuncionarioDto Funcionario) {
+	public FuncionarioDto salvarFuncionario (@RequestBody FuncionarioDto Funcionario) {
 		return funcionarioService.salvar(Funcionario);
 	}
 	@ResponseBody
 	@GetMapping("/buscar")
-	public FuncionarioDto buscarCliente(@RequestParam String id) {
+	public FuncionarioDto buscarCliente(@RequestParam Integer id) {
 		return funcionarioService.buscar(id);
 	}
 }

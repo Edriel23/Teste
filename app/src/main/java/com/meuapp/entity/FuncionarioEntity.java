@@ -1,11 +1,11 @@
 package com.meuapp.entity;
 
-import javax.persistence.Id;
-
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -14,11 +14,11 @@ import javax.persistence.Table;
 public class FuncionarioEntity {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer Id;
 	
 	
-	private String nomeFunconario;
+	private String nomeFuncionario;
 	private String cpfFuncionario;
 	private String cargoFuncionario;
 	private Double salarioFuncionario;
@@ -32,10 +32,10 @@ public class FuncionarioEntity {
 		Id = id;
 	}
 	public String getNomeFunconario() {
-		return nomeFunconario;
+		return nomeFuncionario;
 	}
 	public void setNomeFunconario(String nomeFunconario) {
-		this.nomeFunconario = nomeFunconario;
+		this.nomeFuncionario = nomeFunconario;
 	}
 	public String getCpfFuncionario() {
 		return cpfFuncionario;

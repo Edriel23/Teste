@@ -1,7 +1,11 @@
 package com.meuapp.service;
 
-import java.util.Date;
 
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,39 +18,25 @@ public class FuncionarioService {
 
 	@Autowired
 	FuncionarioRepository funcionarioRepository;
+	
+	@Autowired
+	ModelMapper mapper;
+	
+	public List<FuncionarioDto> getAllFuncionario(){
+		return funcionarioRepository.findAll()
+				.stream()
+				.map(f -> mapper.map(f, FuncionarioDto.class))
+				.collect(Collectors.toList());
+	}
 
-	public FuncionarioEntity salvar(FuncionarioDto funcionario) {
-		
-	String nomeFunconario = funcionario.getNomeFunconario();
-	String cpfFuncionario = funcionario.getCpfFuncionario();
-	String cargoFuncioario = funcionario.getCargoFuncionario();
-	Double salarioFuncioanario = funcionario.getSalarioFuncionario();
-	Date dataDeNacimento = funcionario.getDataDeNacimento();
-	
-	FuncionarioEntity objetoParaSalvar = new FuncionarioEntity();
-	objetoParaSalvar.setNomeFunconario(nomeFunconario);
-	objetoParaSalvar.setCpfFuncionario(cpfFuncionario);
-	objetoParaSalvar.setCargoFuncionario(cargoFuncioario);
-	objetoParaSalvar.setSalarioFuncionario(salarioFuncioanario);
-	objetoParaSalvar.setDataDeNacimento(dataDeNacimento);
-	return funcionarioRepository.save(objetoParaSalvar);
-	
-	
+	public FuncionarioDto salvar(FuncionarioDto funcionario) {
+		FuncionarioEntity funcionarioEnt = funcionarioRepository.save(mapper.map(funcionario, FuncionarioEntity.class));
+		return mapper.map(funcionarioEnt, FuncionarioDto.class);
 	}
 	
-	public FuncionarioDto buscar (String id) {
-		FuncionarioEntity funcionario = funcionarioRepository.findById(Integer.valueOf(id)).get();
-		FuncionarioDto retorno = new FuncionarioDto();
-		retorno.setId(funcionario.getId());
-		retorno.setNomeFunconario(funcionario.getNomeFunconario());
-		retorno.setCpfFuncionario(funcionario.getCpfFuncionario());
-		retorno.setCargoFuncionario(funcionario.getCargoFuncionario());
-		retorno.setSalarioFuncionario(funcionario.getSalarioFuncionario());
-		retorno.setDataDeNacimento(funcionario.getDataDeNacimento());
-		
-		return retorno;
-	
-		
+	public FuncionarioDto buscar (Integer id) {
+		FuncionarioEntity funcionario = funcionarioRepository.findById(id).get();
+		return mapper.map(funcionario, FuncionarioDto.class);
 	}
 	
 
